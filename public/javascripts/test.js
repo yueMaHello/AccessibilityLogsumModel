@@ -192,46 +192,7 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
           ),
           new Color([125,125,125,0])
         );
-        // featureLayer.on('click',function(evt){
-        //     map.graphics.clear();
-        //     var graphic = evt.graphic;
-        //     selectZone = graphic.attributes.TAZ_New;
-        //     var highlightGraphic = new Graphic(evt.graphic.geometry,highlightSymbol);
-        //     map.graphics.add(highlightGraphic);
-        //     featureLayer.redraw();
-        // });
-        // var accessibilityResult = [];
-        // largestIndividualArray = findRangeForIndividualCalcultion();
-        // console.log(dataMatrix)
-        // sort = Object.values(largestIndividualArray).sort((prev,next)=>prev-next); //from smallest to largest
-        // sort = sort.map(x =>x.toFixed(2));
-        // console.log(sort)
-        // var chunkZones = 89;
         var symbol = new SimpleFillSymbol(); 
-
-       //legend. If you want to change legend scale or legend color, this part of code needs to be modified
-       // renderer.addBreak(-Infinity, 0.5, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([255, 255, 255,0.90])));
-       // renderer.addBreak(0.5, 1, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([	249, 238, 237,0.90])));
-       // renderer.addBreak(1, 1.5, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([243, 224, 219,0.90])));
-       // renderer.addBreak(1.5,2, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([237, 214, 202,0.90])));
-       // renderer.addBreak(2, 2.5, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([225, 200, 170,0.90])));
-       // renderer.addBreak(2.5,3, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([213, 196, 141,0.90])));
-       // renderer.addBreak(3, 3.25, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([207, 197, 127,0.90])));
-       // renderer.addBreak(3.25,3.5, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([201, 199, 113,0.90])));
-       // renderer.addBreak(3.5,3.75, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([185, 195, 101,0.90])));
-       // renderer.addBreak(3.75,4, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([168, 189, 88,0.90])));
-       // renderer.addBreak(4,4.25, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([149, 183, 77,0.90])));
-       // renderer.addBreak(4.25,4.5, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([129, 177, 66,0.90])));
-       // renderer.addBreak(4.5,4.75, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([109, 171, 55,0.90])));
-       // renderer.addBreak(4.75, 5, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([87, 165, 45,0.90])));
-       // renderer.addBreak(5, 5.25, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([	66, 159, 36,0.90])));
-       // renderer.addBreak(5.25,5.5, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([44, 153, 27,0.90])));
-       // renderer.addBreak(5.5,5.75, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([	37, 121, 24,0.90])));
-       // renderer.addBreak(5.75,6 , new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([11, 106, 18,0.90])));
-       // renderer.addBreak(6, Infinity, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([5, 80, 15,0.90])));
-       // featureLayer.setRenderer(renderer);
-       
-       
        changeScale();
        //legend
         $('#legendDiv').append('<div class="legendClass" id = "legendid" </div>');  
@@ -317,7 +278,14 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
               featureLayer.setRenderer(renderer);
             }
             else{
-              var valueArray =  Object.values(dataMatrix).sort();
+              var valueArray;
+              if(check === false){
+                valueArray =  Object.values(dataMatrix).sort();
+                
+              }
+              else{
+                valueArray =  Object.values(reverseDataMatrix).sort()
+              }
               var chunksize = 90;
               var renderer = new ClassBreaksRenderer(symbol, function(feature){
                 //if 'var check' is false, then show origin to destination
@@ -377,16 +345,22 @@ function buildMatrixLookup(arr) {
   for(var i in lookup){
       var total = 0;
       var reverseTotal = 0
+      if(i<101||i>6000){
+        console.log(i)
+        continue;
+      }
+
       for(var j in lookup[i]){
+        // if(j<101||j>6000){
+        //   continue;
+        // }
           total += Math.exp(lookup[i][j])
           reverseTotal += Math.exp(lookup[j][i])
 
       }
-      total = getBaseLog(2.718,total);
-      reverseTotal = getBaseLog(2.718,reverseTotal);
 
-      logsumOfLogsum[i] = total
-      reverseLogsumOfLogsum[i] = reverseTotal;
+      logsumOfLogsum[i] =  getBaseLog(2.718,total)
+      reverseLogsumOfLogsum[i] = getBaseLog(2.718,reverseTotal);
   }
 
   return [logsumOfLogsum,reverseLogsumOfLogsum];
