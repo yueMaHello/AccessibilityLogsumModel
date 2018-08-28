@@ -1,7 +1,7 @@
 var express = require('express');
 var fs = require('fs');
 var router = express.Router();
-var appName = 'Accessibility Logsum Model';
+var appName = 'Logsum Model';
 var folderNamesAndCsvNames = {};
 var folderNames = walkfolders('./public/data/');
 
