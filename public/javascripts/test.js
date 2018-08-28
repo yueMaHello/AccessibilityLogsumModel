@@ -1,5 +1,6 @@
 var map;
 var dataMatrix;
+var reverseDataMatrix;
 var q = d3.queue();
 var check = false;
 var largestIndividualArray = [];
@@ -9,7 +10,7 @@ var hoverZone;
 var jobOption = 'Work'; //PSE,Other,Otherpurpose,GS
 var incomeOption = 'Med'; //Hi,Lo
 var carOption = 'Ins';//No, Suff,NCAW
-var carOption3 = 'Ins'
+var carOption3 = 'Ins';
 var purposeOption = "All";//Eat,PB,PUDO,QS,Rec,Shop,Soc
 var gradeOption = "Elem";//Elem,JHS,Pre,SHS_Lic,SHS_NoLic
 var selectMatrixName='../data/Work/LogsumMed_Ins.csv'; //default matrix, show when loading the web page
@@ -42,29 +43,6 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
             var nowJobOption = $('input[name=options1]:checked').val();
             if(nowJobOption!= jobOption){
               jobOption=nowJobOption;
-              // if(nowJobOption!= jobOption){
-              //   jobOption=nowJobOption;
-              // 
-              //   for(var m=0;m<Object.keys(sliderType).length;m++){
-              //     var jobType = Object.keys(sliderType)[m];
-              //     console.log(jobType)
-              //     if(jobOption === jobType){
-              //       console.log(Object.keys(sliderType[jobType]).length)
-              //       $('#dynamicRadios').empty();
-              //       for (var j=0;j<Object.keys(sliderType[jobType]).length;j++){
-              //         var id = 'radios'+jobType+j;
-              //         var containerId = 'radiosContainer'+jobType+j;
-              //         $('#dynamicRadios').append('<div id='+containerId+'></div>');
-              //         $('#'+containerId).append('<div id='+id+'></div>');
-              //         for(var n =0;n<sliderType[jobType][j].length;n++){
-              //           $('#'+id).append('<input type = "radio" name="'+sliderType[jobType][j][0]+'" value="'+sliderType[jobType][j][n]+'" checked><label>'+sliderType[jobType][j][n]+'</label>');                    
-              //         }
-              //         $('#'+id).radiosToSlider({animation: true});
-              //         $('#'+id).click(function(){console.log(222)})
-              //       }
-              //       break;
-              //     }
-              //   }
               if(jobOption === 'PSE'){
     
                 $('#radios6').css("visibility", "visible");
@@ -102,13 +80,16 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
                 selectMatrixName =findMatrix();
               }
               //read selected matrix and replot the map
-              d3.csv(selectMatrixName,function(d){              
-                dataMatrix = buildMatrixLookup(d);
+              d3.csv(selectMatrixName,function(d){     
+                var result = buildMatrixLookup(d)
+                dataMatrix = result[0];
+                reverseDataMatrix = result[1];
                 $("#wait").css("display", "none");
                 changeScale();
                 featureLayer.redraw();
               });
             }
+            
         });
 
         $('#radios2').click(function() {
@@ -153,7 +134,10 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
           selectMatrixName =findMatrix();
           
           d3.csv(selectMatrixName,function(d){
-            dataMatrix = buildMatrixLookup(d);
+            
+            var result = buildMatrixLookup(d);
+            dataMatrix = result[0];
+            reverseDataMatrix = result[1]
             $("#wait").css("display", "none");
             changeScale()
             featureLayer.redraw();
@@ -161,7 +145,9 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
 
           });
         }
-        dataMatrix = buildMatrixLookup(selectMatrix);
+        var result = buildMatrixLookup(selectMatrix);
+        dataMatrix = result[0];
+        reverseDataMatrix = result[1]
         var popup = new Popup({  
           fillSymbol:
             new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
@@ -303,7 +289,7 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
                 //else, destination to origin
                 else{
                   //return dataMatrix[feature.attributes.TAZ_New][selectZone];
-                    return dataMatrix[feature.attributes.TAZ_New];
+                    return reverseDataMatrix[feature.attributes.TAZ_New];
       
                 }
              });
@@ -331,22 +317,23 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
               featureLayer.setRenderer(renderer);
             }
             else{
+              var valueArray =  Object.values(dataMatrix).sort();
+              var chunksize = 90;
               var renderer = new ClassBreaksRenderer(symbol, function(feature){
                 //if 'var check' is false, then show origin to destination
                 if(check === false){
-      
+            
                   return dataMatrix[feature.attributes.TAZ_New];
                 }
                 //else, destination to origin
                 else{
                   //return dataMatrix[feature.attributes.TAZ_New][selectZone];
-                    return dataMatrix[feature.attributes.TAZ_New];
+              
+                    return reverseDataMatrix[feature.attributes.TAZ_New];
       
-                }
-             });
-
-                var valueArray = Object.values(dataMatrix).sort();
-                var chunksize = 90;
+                  }
+                });
+              
                 renderer.addBreak(-Infinity, valueArray[chunksize], new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([255, 255, 255,0.90])));
                 renderer.addBreak(valueArray[chunksize], valueArray[2*chunksize], new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([	249, 238, 237,0.90])));
                 renderer.addBreak(valueArray[2*chunksize],valueArray[3*chunksize], new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([243, 224, 219,0.90])));
@@ -377,7 +364,7 @@ function buildMatrixLookup(arr) {
   var lookup = {};
   
   var logsumOfLogsum = {};
-  var DtoOLogsumOfLogsum={};
+  var reverseLogsumOfLogsum={};
   var index = arr.columns;
   var verbal = index[0];
 
@@ -389,14 +376,20 @@ function buildMatrixLookup(arr) {
 
   for(var i in lookup){
       var total = 0;
+      var reverseTotal = 0
       for(var j in lookup[i]){
           total += Math.exp(lookup[i][j])
+          reverseTotal += Math.exp(lookup[j][i])
+
       }
       total = getBaseLog(2.718,total);
+      reverseTotal = getBaseLog(2.718,reverseTotal);
+
       logsumOfLogsum[i] = total
+      reverseLogsumOfLogsum[i] = reverseTotal;
   }
-  console.log(logsumOfLogsum);
-  return logsumOfLogsum;
+
+  return [logsumOfLogsum,reverseLogsumOfLogsum];
 }
 
 
@@ -448,7 +441,6 @@ function findMatrix(){
             baseDirect = "../data/Otherpurpose/Logsum"+purposeOption+'_'+carOption3+'.csv';
         }
     }
-    console.log(baseDirect);
     return baseDirect;
 
 }
