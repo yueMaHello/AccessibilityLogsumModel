@@ -132,17 +132,13 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
         });
         function redrawLayer(){
           selectMatrixName =findMatrix();
-          
           d3.csv(selectMatrixName,function(d){
-            
             var result = buildMatrixLookup(d);
             dataMatrix = result[0];
             reverseDataMatrix = result[1]
             $("#wait").css("display", "none");
             changeScale()
             featureLayer.redraw();
-        
-
           });
         }
         var result = buildMatrixLookup(selectMatrix);
@@ -254,7 +250,7 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
       
                 }
              });
-
+             
               //legend. If you want to change legend scale or legend color, this part of code needs to be modified
               renderer.addBreak(-Infinity, 0.5, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([255, 255, 255,0.90])));
               renderer.addBreak(0.5, 1, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([	249, 238, 237,0.90])));
@@ -280,11 +276,11 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
             else{
               var valueArray;
               if(check === false){
-                valueArray =  Object.values(dataMatrix).sort();
+                valueArray =  Object.values(dataMatrix).sort(function(a, b){return a - b});
                 
               }
               else{
-                valueArray =  Object.values(reverseDataMatrix).sort()
+                valueArray =  Object.values(reverseDataMatrix).sort(function(a, b){return a - b});
               }
               var chunksize = 90;
               var renderer = new ClassBreaksRenderer(symbol, function(feature){
@@ -301,7 +297,7 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
       
                   }
                 });
-              
+                // console.log(valueArray)
                 renderer.addBreak(-Infinity, valueArray[chunksize], new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([255, 255, 255,0.90])));
                 renderer.addBreak(valueArray[chunksize], valueArray[2*chunksize], new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([	249, 238, 237,0.90])));
                 renderer.addBreak(valueArray[2*chunksize],valueArray[3*chunksize], new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([243, 224, 219,0.90])));
@@ -322,6 +318,7 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
                 renderer.addBreak(valueArray[17*chunksize], valueArray[18*chunksize], new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([11, 106, 18,0.90])));
                 renderer.addBreak(valueArray[18*chunksize], Infinity, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([5, 80, 15,0.90])));
                 featureLayer.setRenderer(renderer);      
+                // console.log(renderer)
               }
             }
     }
@@ -345,10 +342,10 @@ function buildMatrixLookup(arr) {
   for(var i in lookup){
       var total = 0;
       var reverseTotal = 0
-      if(i<101||i>6000){
-        console.log(i)
-        continue;
-      }
+      // if(i<101||i>6000){
+      //   console.log(i)
+      //   continue;
+      // }
 
       for(var j in lookup[i]){
         // if(j<101||j>6000){

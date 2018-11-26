@@ -1,8 +1,6 @@
 //- include main.html
 extends layout
-
 block content
-
     h1= title
     label(class="switch")
       input(type="checkbox" id = "interact")
@@ -16,7 +14,7 @@ block content
     div(id="viewDiv")
     div(id="legendDiv")  
       div(class='legendClass' id = 'dynamicLegend')
-    div(id = radioContaniers)
+    div(id = "radioContaniers")
       div(id = 'radioContainer1')
         div(id="radios1")
           input(id="optionWork" name="options1" type="radio" value = 'Work' checked)
@@ -82,15 +80,15 @@ block content
           label(for="optionSoc") Soc
           
           
-    
-    div(id = 'radioContainer6')
-      div(id="radios6")
-        input(id="optionNocar6" name="options6" type="radio" value = 'No')
-        label(for="optionNocar6") No Car
-        input(id="optionInsuffcar6" name="options6" type="radio" value = 'Ins' checked)
-        label(for="optionInsuffcar6") Insuff Car
-        input(id="optionSuffcar6" name="options6" type="radio" value = 'Suff')
-        label(for="optionSuffcar6") Suff Car
+      
+      div(id = 'radioContainer6')
+        div(id="radios6")
+          input(id="optionNocar6" name="options6" type="radio" value = 'No')
+          label(for="optionNocar6") No Car
+          input(id="optionInsuffcar6" name="options6" type="radio" value = 'Ins' checked)
+          label(for="optionInsuffcar6") Insuff Car
+          input(id="optionSuffcar6" name="options6" type="radio" value = 'Suff')
+          label(for="optionSuffcar6") Suff Car
     div(id = 'dynamicRadios')  
     div(id="wait" style="display:none;width:69px;height:89px; solid black;position:absolute;top:50%;left:50%;padding:2px;")
       img(src='./images/demo_wait.gif' width="64" height="64")
