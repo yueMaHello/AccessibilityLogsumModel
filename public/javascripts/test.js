@@ -63,13 +63,15 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
     }
     $('#firstLevelContainer').radiosToSlider({animation: true});
     $('#firstLevelContainer').click(function(e){
-        $('#OtherLevelsContainer').empty();
         let nowClickedFirstLevel = $("input[name='firstLevelRadios']:checked").val();
         if(nowClickedFirstLevel!==clickedFirstLevel && typeof(nowClickedFirstLevel)!=='undefined'){
             resetLayer();
+            $('#OtherLevelsContainer').empty();
             clickedFirstLevel = nowClickedFirstLevel;
             clickedSecondLevel = undefined;
             clickedThirdLevel = undefined;
+            clickedFourthLevel = undefined;
+
             if(checkDepth(sliderType[clickedFirstLevel])>1){
                 $('#OtherLevelsContainer').append('<div id="secondLevelRadios"></div>');
                 for(let k in sliderType[clickedFirstLevel]){
@@ -77,12 +79,15 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
                 }
                 $('#secondLevelRadios').radiosToSlider({animation: true});
                 $('#secondLevelRadios').click(function(e){
-                    $('#thirdLevelRadios').empty();
+                    $('#thirdLevelRadios').remove();
+                    $('#fourthLevelRadios').remove();
                     let nowClickedSecondLevel =$("input[name='secondLevelRadios']:checked").val();
                     if(nowClickedSecondLevel!==clickedSecondLevel && typeof(nowClickedSecondLevel)!=='undefined'){
                         resetLayer();
                         clickedSecondLevel = nowClickedSecondLevel;
                         clickedThirdLevel = undefined;
+                        clickedFourthLevel = undefined;
+
                         if(checkDepth(sliderType[clickedFirstLevel][clickedSecondLevel])>1){
                             $('#OtherLevelsContainer').append('<div id="thirdLevelRadios"></div>');
                             for(let k in sliderType[clickedFirstLevel][clickedSecondLevel]){
@@ -90,7 +95,7 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
                             }
                             $('#thirdLevelRadios').radiosToSlider({animation: true});
                             $('#thirdLevelRadios').click(function(e){
-                                $('#fourthLevelRadios').empty();
+                                $('#fourthLevelRadios').remove();
                                 let nowClickedThirdLevel =$("input[name='thirdLevelRadios']:checked").val();
                                 if(nowClickedThirdLevel!==clickedThirdLevel && typeof(nowClickedThirdLevel)!=='undefined'){
                                     resetLayer();
@@ -128,6 +133,8 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
                                 let nowClickedThirdLevel =$("input[name='thirdLevelRadios']:checked").val();
                                 if(nowClickedThirdLevel!==clickedThirdLevel && typeof(nowClickedThirdLevel)!=='undefined'){
                                     clickedThirdLevel = nowClickedThirdLevel;
+                                    clickedFourthLevel = undefined;
+                                    $('#fourthLevelRadios').remove();
                                     selectMatrixName = './data/'+clickedFirstLevel+'/'+clickedSecondLevel+'/'+clickedThirdLevel+'.csv';
                                     $("#wait").css("display", "block");
                                     redrawLayer(selectMatrixName);
