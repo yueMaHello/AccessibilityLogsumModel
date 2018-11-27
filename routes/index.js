@@ -3,56 +3,49 @@ var fs = require('fs');
 var router = express.Router();
 var appName = 'Accessibility Logsum Model';
 var folderNamesAndCsvNames = {};
-var folderNames = walkfolders('./public/data/');
-
+var currentFolderName = './public/data/';
+var folderNames = walkfolders(currentFolderName);
 
 Array.prototype.contains = function(element){
     return this.indexOf(element) > -1;
 };
-for(var i=0;i<folderNames.length;i++){
-  var csvNames = walkfolders('./public/data/'+folderNames[i]);
-  //console.log(csvNames)
-  var usefulPart = csvNames[0].split('.csv')[0].split('Logsum')[1].split('_')
-  var usefulLength = usefulPart.length;
-  folderNamesAndCsvNames[folderNames[i]] = {}
-  for(var n=0;n<usefulLength;n++){
+folderNamesAndCsvNames = {
+    'Work':{
+        'High':['Insuff Car','No Car','Suff Car','Need Car At Work'],
+        'Low':['Insuff Car','No Car','Suff Car','Need Car At Work'],
+        'Medium':['Insuff Car','No Car','Suff Car','Need Car At Work'],
+    },
+    'PSE':['Insuff Car','No Car','Suff Car'],
 
-    folderNamesAndCsvNames[folderNames[i]][n] = [];
-  }  
-
-
-  for(var j=0;j<csvNames.length;j++){
-    var usefulPart = csvNames[j].split('.csv')[0].split('Logsum')[1].split('_')
-    for(var m=0;m<usefulPart.length;m++){
-      if(typeof(folderNamesAndCsvNames[folderNames[i]][m])!='undefined'){
-        if(folderNamesAndCsvNames[folderNames[i]][m].contains(usefulPart[m])===false){
-        
-          folderNamesAndCsvNames[folderNames[i]][m].push(usefulPart[m]);
-        }
-      }
-
-
+    'GS':{
+        'Elementary School':['Insuff Car','No Car','Suff Car'],
+        'Junior High':['Insuff Car','No Car','Suff Car'],
+        'Preschool':['Insuff Car','No Car','Suff Car'],
+        'SHS With License':['Insuff Car','No Car','Suff Car'],
+        'SHS Without License':['Insuff Car','No Car','Suff Car'],
+    },
+    'Other': ['Insuff Car','No Car','Suff Car'],
+    'Otherpurpose':{
+        'Eat':['Insuff Car','No Car','Suff Car'],
+        'PB':['Insuff Car','No Car','Suff Car'],
+        'PUDO':['Insuff Car','No Car','Suff Car'],
+        'QS':['Insuff Car','No Car','Suff Car'],
+        'Rec':['Insuff Car','No Car','Suff Car'],
+        'Shop':['Insuff Car','No Car','Suff Car'],
+        'Soc':['Insuff Car','No Car','Suff Car']
     }
 
-  }
-
-}
-
-
-
+};
 router.get('/', function(req, res, next) {
     res.render('index', { title: appName,sliderType:folderNamesAndCsvNames});
 });
-
-
-
 
 function walkfolders(dir) {
     var fs = fs || require('fs'),
         files = fs.readdirSync(dir);
     var filelist = filelist || [];
-    files.forEach(function(file) {
-            filelist.push(file);
+    files.forEach(function (file) {
+        filelist.push(file);
     });
     return filelist;
 }
