@@ -1,3 +1,39 @@
+/*
+* The data source is stored in './public/data/'
+* There are several sub folders belonging to this folder.
+* The application will produce the the slider based on the structure of './public/data' directory.
+* If you changed the data structure or names of the directories, you should change the 'sliderType' variable as well.
+* The inner code should be suitable for similar data structure without any change.
+* I will explain the logic to Juhong Yuan.
+* */
+
+var sliderType = {
+    'Work':{
+        'High':['Insuff Car','No Car','Suff Car','Need Car At Work'],
+        'Low':['Insuff Car','No Car','Suff Car','Need Car At Work'],
+        'Medium':['Insuff Car','No Car','Suff Car','Need Car At Work'],
+    },
+    'PSE':['Insuff Car','No Car','Suff Car'],
+
+    'GS':{
+        'Elementary School':['Insuff Car','No Car','Suff Car'],
+        'Junior High':['Insuff Car','No Car','Suff Car'],
+        'Preschool':['Insuff Car','No Car','Suff Car'],
+        'SHS With License':['Insuff Car','No Car','Suff Car'],
+        'SHS Without License':['Insuff Car','No Car','Suff Car'],
+    },
+    'Other': ['Insuff Car','No Car','Suff Car'],
+    'Otherpurpose':{
+        'Eat':['Insuff Car','No Car','Suff Car'],
+        'PB':['Insuff Car','No Car','Suff Car'],
+        'PUDO':['Insuff Car','No Car','Suff Car'],
+        'QS':['Insuff Car','No Car','Suff Car'],
+        'Rec':['Insuff Car','No Car','Suff Car'],
+        'Shop':['Insuff Car','No Car','Suff Car'],
+        'Soc':['Insuff Car','No Car','Suff Car']
+    }
+
+};
 var map;
 var dataMatrix;
 var reverseDataMatrix;
@@ -42,7 +78,6 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
                     let nowClickedSecondLevel =$("input[name='secondLevelRadios']:checked").val();
                     if(nowClickedSecondLevel!==clickedSecondLevel && typeof(nowClickedSecondLevel)!=='undefined'){
                         resetLayer();
-                        console.log(nowClickedSecondLevel);
                         clickedSecondLevel = nowClickedSecondLevel;
                         clickedThirdLevel = undefined;
                         if(checkDepth(sliderType[clickedFirstLevel][clickedSecondLevel])>1){
@@ -62,7 +97,6 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
                                 let nowClickedThirdLevel =$("input[name='thirdLevelRadios']:checked").val();
                                 if(nowClickedThirdLevel!==clickedThirdLevel && typeof(nowClickedThirdLevel)!=='undefined'){
                                     clickedThirdLevel = nowClickedThirdLevel;
-                                    console.log(clickedThirdLevel);
                                     selectMatrixName = './data/'+clickedFirstLevel+'/'+clickedSecondLevel+'/'+clickedThirdLevel+'.csv';
                                     $("#wait").css("display", "block");
                                     redrawLayer(selectMatrixName);
@@ -83,7 +117,6 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
                     let nowClickedSecondLevel = $("input[name='secondLevelRadios']:checked").val();
                     if(nowClickedSecondLevel!== clickedSecondLevel && typeof(nowClickedSecondLevel)!=='undefined' ){
                         clickedSecondLevel = nowClickedSecondLevel;
-                        console.log(clickedSecondLevel);
                         selectMatrixName = './data/'+clickedFirstLevel+'/'+clickedSecondLevel+'.csv';
                         $("#wait").css("display", "block");
                         redrawLayer(selectMatrixName)
@@ -197,7 +230,6 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
         renderer.addBreak(-Infinity, Infinity, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),0.3)).setColor(new Color([255, 255, 255,0.30])));
         featureLayer.setRenderer(renderer);
         featureLayer.redraw()
-        console.log(111)
     }
     function changeScale(){
         let symbol = new SimpleFillSymbol();
@@ -257,7 +289,6 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
                     return reverseDataMatrix[feature.attributes.TAZ_New];
                 }
             });
-            // console.log(valueArray)
             renderer.addBreak(-Infinity, valueArray[chunksize], new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([255, 255, 255,0.90])));
             renderer.addBreak(valueArray[chunksize], valueArray[2*chunksize], new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([	249, 238, 237,0.90])));
             renderer.addBreak(valueArray[2*chunksize],valueArray[3*chunksize], new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([243, 224, 219,0.90])));
@@ -278,7 +309,6 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
             renderer.addBreak(valueArray[17*chunksize], valueArray[18*chunksize], new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([11, 106, 18,0.90])));
             renderer.addBreak(valueArray[18*chunksize], Infinity, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([5, 80, 15,0.90])));
             featureLayer.setRenderer(renderer);
-            // console.log(renderer)
         }
     }
 
