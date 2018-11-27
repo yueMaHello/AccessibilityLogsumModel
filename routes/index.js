@@ -1,7 +1,7 @@
 var express = require('express');
 var fs = require('fs');
 var router = express.Router();
-var appName = 'Accessibility Logsum Model';
+var appName = 'Accessibility Model';
 var currentFolderName = './public/data/';
 
 Array.prototype.contains = function(element){

@@ -30,9 +30,12 @@ var sliderType = {
         'QS':['Insuff Car','No Car','Suff Car'],
         'Rec':['Insuff Car','No Car','Suff Car'],
         'Shop':['Insuff Car','No Car','Suff Car'],
-        'Soc':['Insuff Car','No Car','Suff Car']
+        'Soc':['Insuff Car','No Car','Suff Car'],
+        'test':{
+            'test1':['No Car'],
+            'test2':['Suff Car']
+        }
     }
-
 };
 var map;
 var dataMatrix;
@@ -40,11 +43,11 @@ var reverseDataMatrix;
 var check = false;
 var selectMatrixName;
 var scaleCheck=false;
-//load esri libraries
 var clickedFirstLevel;
 var clickedSecondLevel;
 var clickedThirdLevel;
-
+var clickedFourthLevel;
+//load esri libraries
 require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
     "esri/tasks/query","esri/dijit/Popup",
     "dojo/dom-class","esri/dijit/BasemapToggle","esri/dijit/Legend",
@@ -82,10 +85,38 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
                         clickedThirdLevel = undefined;
                         if(checkDepth(sliderType[clickedFirstLevel][clickedSecondLevel])>1){
                             $('#OtherLevelsContainer').append('<div id="thirdLevelRadios"></div>');
-                            for(let k in sliderType[clickedFirstLevel]){
+                            for(let k in sliderType[clickedFirstLevel][clickedSecondLevel]){
                                 $('#thirdLevelRadios').append('<input type="radio" name="thirdLevelRadios" value="'+k+'" id="'+k+'">').append('<label for="'+k+'">'+k+'</label>')
                             }
                             $('#thirdLevelRadios').radiosToSlider({animation: true});
+                            $('#thirdLevelRadios').click(function(e){
+                                $('#fourthLevelRadios').empty();
+                                let nowClickedThirdLevel =$("input[name='thirdLevelRadios']:checked").val();
+                                if(nowClickedThirdLevel!==clickedThirdLevel && typeof(nowClickedThirdLevel)!=='undefined'){
+                                    resetLayer();
+                                    clickedThirdLevel = nowClickedThirdLevel;
+                                    clickedFourthLevel = undefined;
+                                    if(checkDepth(sliderType[clickedFirstLevel][clickedSecondLevel][clickedThirdLevel])>1){
+                                        alert('Sorry, your data structure is too complex and I couldn\'\t handle it yet' )
+                                    }
+                                    else{
+                                        $('#OtherLevelsContainer').append('<div id="fourthLevelRadios"></div>');
+                                        for(let k in sliderType[clickedFirstLevel][clickedSecondLevel][clickedThirdLevel]){
+                                            $('#fourthLevelRadios').append('<input type="radio" name="fourthLevelRadios" value="'+sliderType[clickedFirstLevel][clickedSecondLevel][clickedThirdLevel][k].split('.csv')[0]+'" id="'+k+'">').append('<label for="'+k+'">'+sliderType[clickedFirstLevel][clickedSecondLevel][clickedThirdLevel][k].split('.csv')[0]+'</label>')
+                                        }
+                                        $('#fourthLevelRadios').radiosToSlider({animation: true});
+                                        $('#fourthLevelRadios').click(function(e){
+                                            let nowClickedFourthLevel =$("input[name='fourthLevelRadios']:checked").val();
+                                            if(nowClickedFourthLevel!==clickedFourthLevel && typeof(nowClickedFourthLevel)!=='undefined'){
+                                                clickedFourthLevel = nowClickedFourthLevel;
+                                                selectMatrixName = './data/'+clickedFirstLevel+'/'+clickedSecondLevel+'/'+clickedThirdLevel+'/'+clickedFourthLevel+'.csv';
+                                                $("#wait").css("display", "block");
+                                                redrawLayer(selectMatrixName);
+                                            }
+                                        })
+                                    }
+                                }
+                            });
                         }
                         else{
                             $('#OtherLevelsContainer').append('<div id="thirdLevelRadios"></div>');
@@ -112,7 +143,6 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
                     $('#secondLevelRadios').append('<input type="radio" name="secondLevelRadios" value="'+sliderType[clickedFirstLevel][k].split('.csv')[0]+'" id="'+k+'">').append('<label for="'+k+'">'+sliderType[clickedFirstLevel][k].split('.csv')[0]+'</label>')
                 }
                 $('#secondLevelRadios').radiosToSlider({animation: true});
-
                 $('#secondLevelRadios').click(function(e){
                     let nowClickedSecondLevel = $("input[name='secondLevelRadios']:checked").val();
                     if(nowClickedSecondLevel!== clickedSecondLevel && typeof(nowClickedSecondLevel)!=='undefined' ){
@@ -121,15 +151,11 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
                         $("#wait").css("display", "block");
                         redrawLayer(selectMatrixName)
                     }
-
                 })
             }
-
         }
-
     });
     //click radio1 button, the visibility property of other radios is based on radio1 button
-
     function redrawLayer(selectMatrixName){
         d3.csv(selectMatrixName,function(d){
             let result = buildMatrixLookup(d);
@@ -141,11 +167,6 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
         });
     }
 
-    var popup = new Popup({
-        fillSymbol:
-            new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
-                new Color([255, 0, 0]), 2)
-    }, domConstruct.create("div"));
 
     map = new Map("map", {
         basemap: "dark-gray-vector",
@@ -243,7 +264,6 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
                 else{
                     //return dataMatrix[feature.attributes.TAZ_New][selectZone];
                     return reverseDataMatrix[feature.attributes.TAZ_New];
-
                 }
             });
 
