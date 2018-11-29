@@ -7,36 +7,36 @@
 * I will explain the logic to Juhong Yuan.
 * */
 
-var sliderType = {
-    'Work':{
-        'High':['Insuff Car','No Car','Suff Car','Need Car At Work'],
-        'Low':['Insuff Car','No Car','Suff Car','Need Car At Work'],
-        'Medium':['Insuff Car','No Car','Suff Car','Need Car At Work'],
-    },
-    'PSE':['Insuff Car','No Car','Suff Car'],
-
-    'GS':{
-        'Elementary School':['Insuff Car','No Car','Suff Car'],
-        'Junior High':['Insuff Car','No Car','Suff Car'],
-        'Preschool':['Insuff Car','No Car','Suff Car'],
-        'SHS With License':['Insuff Car','No Car','Suff Car'],
-        'SHS Without License':['Insuff Car','No Car','Suff Car'],
-    },
-    'Other': ['Insuff Car','No Car','Suff Car'],
-    'Otherpurpose':{
-        'Eat':['Insuff Car','No Car','Suff Car'],
-        'PB':['Insuff Car','No Car','Suff Car'],
-        'PUDO':['Insuff Car','No Car','Suff Car'],
-        'QS':['Insuff Car','No Car','Suff Car'],
-        'Rec':['Insuff Car','No Car','Suff Car'],
-        'Shop':['Insuff Car','No Car','Suff Car'],
-        'Soc':['Insuff Car','No Car','Suff Car'],
-        'test':{
-            'test1':['No Car'],
-            'test2':['Suff Car']
-        }
-    }
-};
+// var sliderType = {
+//     'Work':{
+//         'High Income':['Insuff Car','No Car','Suff Car','Need Car At Work'],
+//         'Low Income':['Insuff Car','No Car','Suff Car','Need Car At Work'],
+//         'Medium Income':['Insuff Car','No Car','Suff Car','Need Car At Work'],
+//     },
+//     'Post Secondary Education':['Insuff Car','No Car','Suff Car'],
+//
+//     'Grade School':{
+//         'Elementary School':['Insuff Car','No Car','Suff Car'],
+//         'Junior High':['Insuff Car','No Car','Suff Car'],
+//         'Preschool':['Insuff Car','No Car','Suff Car'],
+//         'SHS With License':['Insuff Car','No Car','Suff Car'],
+//         'SHS Without License':['Insuff Car','No Car','Suff Car'],
+//     },
+//     'Other': ['Insuff Car','No Car','Suff Car'],
+//     'Other Purpose':{
+//         'Eat':['Insuff Car','No Car','Suff Car'],
+//         'PB':['Insuff Car','No Car','Suff Car'],
+//         'PUDO':['Insuff Car','No Car','Suff Car'],
+//         'QS':['Insuff Car','No Car','Suff Car'],
+//         'Rec':['Insuff Car','No Car','Suff Car'],
+//         'Shop':['Insuff Car','No Car','Suff Car'],
+//         'Soc':['Insuff Car','No Car','Suff Car'],
+//         'test':{
+//             'test1':['No Car'],
+//             'test2':['Suff Car']
+//         }
+//     }
+// };
 var map;
 var dataMatrix;
 var reverseDataMatrix;
@@ -295,6 +295,9 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
             renderer.addBreak(5.75,6 , new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([11, 106, 18,0.90])));
             renderer.addBreak(6, Infinity, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([5, 80, 15,0.90])));
             featureLayer.setRenderer(renderer);
+
+
+
         }
         else{
             var valueArray;
@@ -312,7 +315,6 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
                 }
                 //else, destination to origin
                 else{
-                    //return dataMatrix[feature.attributes.TAZ_New][selectZone];
                     return reverseDataMatrix[feature.attributes.TAZ_New];
                 }
             });
@@ -338,8 +340,6 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
             featureLayer.setRenderer(renderer);
         }
     }
-
-
 });
 //read csv file into a 2d matrix
 function buildMatrixLookup(arr) {
@@ -355,7 +355,7 @@ function buildMatrixLookup(arr) {
     }
     for(var i in lookup){
         var total = 0;
-        var reverseTotal = 0
+        var reverseTotal = 0;
 
         for(var j in lookup[i]){
             total += Math.exp(lookup[i][j])
@@ -363,7 +363,7 @@ function buildMatrixLookup(arr) {
 
         }
 
-        logsumOfLogsum[i] =  getBaseLog(2.718,total)
+        logsumOfLogsum[i] =  getBaseLog(2.718,total);
         reverseLogsumOfLogsum[i] = getBaseLog(2.718,reverseTotal);
     }
 

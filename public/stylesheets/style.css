@@ -28,7 +28,7 @@ h1{
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #2196F3;
   -webkit-transition: .4s;
   transition: .4s;
   z-index:50;
@@ -90,7 +90,7 @@ input:checked + .slider:before {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #2196F3;
   -webkit-transition: .4s;
   transition: .4s;
   z-index:50;
@@ -153,7 +153,7 @@ input:checked + .slider2:before {
   height:150px;
   /* overflow-y: scroll; */
   z-index:50;
-  width:120px;
+  width:100px;
   border-style: groove;
   background-color: #e6e6e6;
 
