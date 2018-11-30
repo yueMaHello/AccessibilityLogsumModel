@@ -57,111 +57,188 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
 ], function(Graphic,Polyline,domConstruct,Query,Popup,domClass,BasemapToggle,Legend,Map, FeatureLayer,
             SimpleFillSymbol,SimpleLineSymbol,ClassBreaksRenderer,Color, domStyle
 ) {
-    for(let k in sliderType){
-        $('#firstLevelContainer').append('<input type="radio" name="firstLevelRadios" value="'+k+'" id="'+k+'">')
-                                 .append('<label for="'+k+'">'+k+'</label>')
+    // for(let k in sliderType){
+    //     $('#firstLevelContainer').append('<input type="radio" name="firstLevelRadios" value="'+k+'" id="'+k+'">')
+    //                              .append('<label for="'+k+'">'+k+'</label>')
+    // }
+    // $('#firstLevelContainer').radiosToSlider({animation: true});
+    // $('#firstLevelContainer').click(function(e){
+    //     let nowClickedFirstLevel = $("input[name='firstLevelRadios']:checked").val();
+    //     if(nowClickedFirstLevel!==clickedFirstLevel && typeof(nowClickedFirstLevel)!=='undefined'){
+    //         resetLayer();
+    //         $('#OtherLevelsContainer').empty();
+    //         clickedFirstLevel = nowClickedFirstLevel;
+    //         clickedSecondLevel = undefined;
+    //         clickedThirdLevel = undefined;
+    //         clickedFourthLevel = undefined;
+    //
+    //         if(checkDepth(sliderType[clickedFirstLevel])>1){
+    //             $('#OtherLevelsContainer').append('<div id="secondLevelRadios"></div>');
+    //             for(let k in sliderType[clickedFirstLevel]){
+    //                 $('#secondLevelRadios').append('<input type="radio" name="secondLevelRadios" value="'+k+'" id="'+k+'">').append('<label for="'+k+'">'+k+'</label>')
+    //             }
+    //             $('#secondLevelRadios').radiosToSlider({animation: true});
+    //             $('#secondLevelRadios').click(function(e){
+    //                 $('#thirdLevelRadios').remove();
+    //                 $('#fourthLevelRadios').remove();
+    //                 let nowClickedSecondLevel =$("input[name='secondLevelRadios']:checked").val();
+    //                 if(nowClickedSecondLevel!==clickedSecondLevel && typeof(nowClickedSecondLevel)!=='undefined'){
+    //                     resetLayer();
+    //                     clickedSecondLevel = nowClickedSecondLevel;
+    //                     clickedThirdLevel = undefined;
+    //                     clickedFourthLevel = undefined;
+    //
+    //                     if(checkDepth(sliderType[clickedFirstLevel][clickedSecondLevel])>1){
+    //                         $('#OtherLevelsContainer').append('<div id="thirdLevelRadios"></div>');
+    //                         for(let k in sliderType[clickedFirstLevel][clickedSecondLevel]){
+    //                             $('#thirdLevelRadios').append('<input type="radio" name="thirdLevelRadios" value="'+k+'" id="'+k+'">').append('<label for="'+k+'">'+k+'</label>')
+    //                         }
+    //                         $('#thirdLevelRadios').radiosToSlider({animation: true});
+    //                         $('#thirdLevelRadios').click(function(e){
+    //                             $('#fourthLevelRadios').remove();
+    //                             let nowClickedThirdLevel =$("input[name='thirdLevelRadios']:checked").val();
+    //                             if(nowClickedThirdLevel!==clickedThirdLevel && typeof(nowClickedThirdLevel)!=='undefined'){
+    //                                 resetLayer();
+    //                                 clickedThirdLevel = nowClickedThirdLevel;
+    //                                 clickedFourthLevel = undefined;
+    //                                 if(checkDepth(sliderType[clickedFirstLevel][clickedSecondLevel][clickedThirdLevel])>1){
+    //                                     alert('Sorry, your data structure is too complex and I couldn\'\t handle it yet' )
+    //                                 }
+    //                                 else{
+    //                                     $('#OtherLevelsContainer').append('<div id="fourthLevelRadios"></div>');
+    //                                     for(let k in sliderType[clickedFirstLevel][clickedSecondLevel][clickedThirdLevel]){
+    //                                         $('#fourthLevelRadios').append('<input type="radio" name="fourthLevelRadios" value="'+sliderType[clickedFirstLevel][clickedSecondLevel][clickedThirdLevel][k].split('.csv')[0]+'" id="'+k+'">').append('<label for="'+k+'">'+sliderType[clickedFirstLevel][clickedSecondLevel][clickedThirdLevel][k].split('.csv')[0]+'</label>')
+    //                                     }
+    //                                     $('#fourthLevelRadios').radiosToSlider({animation: true});
+    //                                     $('#fourthLevelRadios').click(function(e){
+    //                                         let nowClickedFourthLevel =$("input[name='fourthLevelRadios']:checked").val();
+    //                                         if(nowClickedFourthLevel!==clickedFourthLevel && typeof(nowClickedFourthLevel)!=='undefined'){
+    //                                             clickedFourthLevel = nowClickedFourthLevel;
+    //                                             selectMatrixName = './data/'+clickedFirstLevel+'/'+clickedSecondLevel+'/'+clickedThirdLevel+'/'+clickedFourthLevel+'.csv';
+    //                                             $("#wait").css("display", "block");
+    //                                             redrawLayer(selectMatrixName);
+    //                                         }
+    //                                     })
+    //                                 }
+    //                             }
+    //                         });
+    //                     }
+    //                     else{
+    //                         $('#OtherLevelsContainer').append('<div id="thirdLevelRadios"></div>');
+    //                         for(let k in sliderType[clickedFirstLevel][clickedSecondLevel]){
+    //                             $('#thirdLevelRadios').append('<input type="radio" name="thirdLevelRadios" value="'+sliderType[clickedFirstLevel][clickedSecondLevel][k].split('.csv')[0]+'" id="'+k+'">').append('<label for="'+k+'">'+sliderType[clickedFirstLevel][clickedSecondLevel][k].split('.csv')[0]+'</label>')
+    //                         }
+    //                         $('#thirdLevelRadios').radiosToSlider({animation: true});
+    //                         $('#thirdLevelRadios').click(function(e){
+    //                             let nowClickedThirdLevel =$("input[name='thirdLevelRadios']:checked").val();
+    //                             if(nowClickedThirdLevel!==clickedThirdLevel && typeof(nowClickedThirdLevel)!=='undefined'){
+    //                                 clickedThirdLevel = nowClickedThirdLevel;
+    //                                 clickedFourthLevel = undefined;
+    //                                 $('#fourthLevelRadios').remove();
+    //                                 selectMatrixName = './data/'+clickedFirstLevel+'/'+clickedSecondLevel+'/'+clickedThirdLevel+'.csv';
+    //                                 $("#wait").css("display", "block");
+    //                                 redrawLayer(selectMatrixName);
+    //                             }
+    //                         })
+    //                     }
+    //                 }
+    //             });
+    //         }
+    //         else{
+    //             $('#OtherLevelsContainer').append('<div id="secondLevelRadios"></div>');
+    //             for(let k in sliderType[clickedFirstLevel]){
+    //                 $('#secondLevelRadios').append('<input type="radio" name="secondLevelRadios" value="'+sliderType[clickedFirstLevel][k].split('.csv')[0]+'" id="'+k+'">').append('<label for="'+k+'">'+sliderType[clickedFirstLevel][k].split('.csv')[0]+'</label>')
+    //             }
+    //             $('#secondLevelRadios').radiosToSlider({animation: true});
+    //             $('#secondLevelRadios').click(function(e){
+    //                 let nowClickedSecondLevel = $("input[name='secondLevelRadios']:checked").val();
+    //                 if(nowClickedSecondLevel!== clickedSecondLevel && typeof(nowClickedSecondLevel)!=='undefined' ){
+    //                     clickedSecondLevel = nowClickedSecondLevel;
+    //                     selectMatrixName = './data/'+clickedFirstLevel+'/'+clickedSecondLevel+'.csv';
+    //                     $("#wait").css("display", "block");
+    //                     redrawLayer(selectMatrixName)
+    //                 }
+    //             })
+    //         }
+    //     }
+    // });
+    let sliderRecord = {
+        filePath:null
+    };
+    let oldSliderRecord = {
+        filePath:null
+    };
+
+    let maxDepth = checkDepth(sliderType);
+    console.log(maxDepth);
+
+    for(let i=1;i<maxDepth+1;i++){
+        $('#dynamicRadioContainers').append('<div class="selection" id="'+i+'"></div>');
+        sliderRecord[i] = null;
+        oldSliderRecord[i] = null;
+
     }
-    $('#firstLevelContainer').radiosToSlider({animation: true});
-    $('#firstLevelContainer').click(function(e){
-        let nowClickedFirstLevel = $("input[name='firstLevelRadios']:checked").val();
-        if(nowClickedFirstLevel!==clickedFirstLevel && typeof(nowClickedFirstLevel)!=='undefined'){
-            resetLayer();
-            $('#OtherLevelsContainer').empty();
-            clickedFirstLevel = nowClickedFirstLevel;
-            clickedSecondLevel = undefined;
-            clickedThirdLevel = undefined;
-            clickedFourthLevel = undefined;
+    setSelection(sliderRecord,1,sliderType);
 
-            if(checkDepth(sliderType[clickedFirstLevel])>1){
-                $('#OtherLevelsContainer').append('<div id="secondLevelRadios"></div>');
-                for(let k in sliderType[clickedFirstLevel]){
-                    $('#secondLevelRadios').append('<input type="radio" name="secondLevelRadios" value="'+k+'" id="'+k+'">').append('<label for="'+k+'">'+k+'</label>')
-                }
-                $('#secondLevelRadios').radiosToSlider({animation: true});
-                $('#secondLevelRadios').click(function(e){
-                    $('#thirdLevelRadios').remove();
-                    $('#fourthLevelRadios').remove();
-                    let nowClickedSecondLevel =$("input[name='secondLevelRadios']:checked").val();
-                    if(nowClickedSecondLevel!==clickedSecondLevel && typeof(nowClickedSecondLevel)!=='undefined'){
-                        resetLayer();
-                        clickedSecondLevel = nowClickedSecondLevel;
-                        clickedThirdLevel = undefined;
-                        clickedFourthLevel = undefined;
+    function setSelection(record,num,tmpSliderType){
+        $('#'+num).append('<div id="'+num+'Radios"></div>');
 
-                        if(checkDepth(sliderType[clickedFirstLevel][clickedSecondLevel])>1){
-                            $('#OtherLevelsContainer').append('<div id="thirdLevelRadios"></div>');
-                            for(let k in sliderType[clickedFirstLevel][clickedSecondLevel]){
-                                $('#thirdLevelRadios').append('<input type="radio" name="thirdLevelRadios" value="'+k+'" id="'+k+'">').append('<label for="'+k+'">'+k+'</label>')
-                            }
-                            $('#thirdLevelRadios').radiosToSlider({animation: true});
-                            $('#thirdLevelRadios').click(function(e){
-                                $('#fourthLevelRadios').remove();
-                                let nowClickedThirdLevel =$("input[name='thirdLevelRadios']:checked").val();
-                                if(nowClickedThirdLevel!==clickedThirdLevel && typeof(nowClickedThirdLevel)!=='undefined'){
-                                    resetLayer();
-                                    clickedThirdLevel = nowClickedThirdLevel;
-                                    clickedFourthLevel = undefined;
-                                    if(checkDepth(sliderType[clickedFirstLevel][clickedSecondLevel][clickedThirdLevel])>1){
-                                        alert('Sorry, your data structure is too complex and I couldn\'\t handle it yet' )
-                                    }
-                                    else{
-                                        $('#OtherLevelsContainer').append('<div id="fourthLevelRadios"></div>');
-                                        for(let k in sliderType[clickedFirstLevel][clickedSecondLevel][clickedThirdLevel]){
-                                            $('#fourthLevelRadios').append('<input type="radio" name="fourthLevelRadios" value="'+sliderType[clickedFirstLevel][clickedSecondLevel][clickedThirdLevel][k].split('.csv')[0]+'" id="'+k+'">').append('<label for="'+k+'">'+sliderType[clickedFirstLevel][clickedSecondLevel][clickedThirdLevel][k].split('.csv')[0]+'</label>')
-                                        }
-                                        $('#fourthLevelRadios').radiosToSlider({animation: true});
-                                        $('#fourthLevelRadios').click(function(e){
-                                            let nowClickedFourthLevel =$("input[name='fourthLevelRadios']:checked").val();
-                                            if(nowClickedFourthLevel!==clickedFourthLevel && typeof(nowClickedFourthLevel)!=='undefined'){
-                                                clickedFourthLevel = nowClickedFourthLevel;
-                                                selectMatrixName = './data/'+clickedFirstLevel+'/'+clickedSecondLevel+'/'+clickedThirdLevel+'/'+clickedFourthLevel+'.csv';
-                                                $("#wait").css("display", "block");
-                                                redrawLayer(selectMatrixName);
-                                            }
-                                        })
-                                    }
-                                }
-                            });
-                        }
-                        else{
-                            $('#OtherLevelsContainer').append('<div id="thirdLevelRadios"></div>');
-                            for(let k in sliderType[clickedFirstLevel][clickedSecondLevel]){
-                                $('#thirdLevelRadios').append('<input type="radio" name="thirdLevelRadios" value="'+sliderType[clickedFirstLevel][clickedSecondLevel][k].split('.csv')[0]+'" id="'+k+'">').append('<label for="'+k+'">'+sliderType[clickedFirstLevel][clickedSecondLevel][k].split('.csv')[0]+'</label>')
-                            }
-                            $('#thirdLevelRadios').radiosToSlider({animation: true});
-                            $('#thirdLevelRadios').click(function(e){
-                                let nowClickedThirdLevel =$("input[name='thirdLevelRadios']:checked").val();
-                                if(nowClickedThirdLevel!==clickedThirdLevel && typeof(nowClickedThirdLevel)!=='undefined'){
-                                    clickedThirdLevel = nowClickedThirdLevel;
-                                    clickedFourthLevel = undefined;
-                                    $('#fourthLevelRadios').remove();
-                                    selectMatrixName = './data/'+clickedFirstLevel+'/'+clickedSecondLevel+'/'+clickedThirdLevel+'.csv';
-                                    $("#wait").css("display", "block");
-                                    redrawLayer(selectMatrixName);
-                                }
-                            })
-                        }
-                    }
-                });
+        if(isDict(tmpSliderType)) {
+            for (let k in tmpSliderType) {
+                $('#'+num+'Radios').append('<input type="radio" name="'+num+'Radios" value="'+k+'" id="'+k+'">')
+                            .append('<label for="'+k+'">'+k+'</label>')
             }
-            else{
-                $('#OtherLevelsContainer').append('<div id="secondLevelRadios"></div>');
-                for(let k in sliderType[clickedFirstLevel]){
-                    $('#secondLevelRadios').append('<input type="radio" name="secondLevelRadios" value="'+sliderType[clickedFirstLevel][k].split('.csv')[0]+'" id="'+k+'">').append('<label for="'+k+'">'+sliderType[clickedFirstLevel][k].split('.csv')[0]+'</label>')
+            $('#'+num+'Radios').radiosToSlider({animation: true});
+            $('#'+num+'Radios').click(function(e){
+                if(typeof($("input[name='"+num+"Radios']:checked").val())!=='undefined' && $("input[name='"+num+"Radios']:checked").val()!==oldSliderRecord[num]) {
+                    record[num] = $("input[name='" + num + "Radios']:checked").val();
+                    record.filePath = null;
+                    record  = emptyOtherSelection(num, maxDepth,record);
+                    oldSliderRecord = record;
+                    setSelection(record, num + 1, tmpSliderType[record[num]]);
                 }
-                $('#secondLevelRadios').radiosToSlider({animation: true});
-                $('#secondLevelRadios').click(function(e){
-                    let nowClickedSecondLevel = $("input[name='secondLevelRadios']:checked").val();
-                    if(nowClickedSecondLevel!== clickedSecondLevel && typeof(nowClickedSecondLevel)!=='undefined' ){
-                        clickedSecondLevel = nowClickedSecondLevel;
-                        selectMatrixName = './data/'+clickedFirstLevel+'/'+clickedSecondLevel+'.csv';
-                        $("#wait").css("display", "block");
-                        redrawLayer(selectMatrixName)
-                    }
-                })
-            }
+            });
         }
-    });
+        else{
+            for (let k=0;k<tmpSliderType.length;k++) {
+                // $('#'+num).append('<option>' + tmpSliderType[k] + '</option>');
+                $('#'+num+'Radios').append('<input type="radio" name="'+num+'Radios" value="'+tmpSliderType[k]+'" id="'+tmpSliderType[k]+'">')
+                    .append('<label for="'+tmpSliderType[k]+'">'+tmpSliderType[k]+'</label>')
+            }
+            $('#'+num+'Radios').radiosToSlider({animation: true});
+            $('#'+num+'Radios').click(function(e){
+
+                if(typeof($("input[name='"+num+"Radios']:checked").val())!=='undefined' && $("input[name='"+num+"Radios']:checked").val()!==oldSliderRecord[num]) {
+                    record[num] =$("input[name='"+num+"Radios']:checked").val();
+                    oldSliderRecord[num]=record[num];
+                    record.filePath = generateFilePath(num,record);
+                    console.log(record.filePath);
+                    $("#wait").css("display", "block");
+                    redrawLayer(record.filePath);
+
+                }
+
+            })
+        }
+    }
+    function emptyOtherSelection(num,maxValue,record){
+        for(let i=num+1;i<maxValue+1;i++){
+            record[i] =null;
+            $('#'+i).empty();
+        }
+        return record
+    }
+    function generateFilePath(num,record){
+        // console.log(record,num)
+        result = './data';
+        for(let i=1;i<num;i++){
+            result = result + '/'+record[i]
+        }
+        result+='/'+record[num]+'.csv';
+        return result
+
+    }
+
     //click radio1 button, the visibility property of other radios is based on radio1 button
     function redrawLayer(selectMatrixName){
         d3.csv(selectMatrixName,function(d){
@@ -393,4 +470,7 @@ function checkDepth(object){
     }
     return level;
 
+}
+function isDict(v) {
+    return typeof v==='object' && v!==null && !(v instanceof Array) && !(v instanceof Date);
 }
