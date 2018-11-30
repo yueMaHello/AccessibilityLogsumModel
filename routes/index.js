@@ -8,67 +8,34 @@ var currentFolderName = './public/data/';
 Array.prototype.contains = function(element){
     return this.indexOf(element) > -1;
 };
-let sliderType = walk('./public/data');
-function walk(directory) {
 
-    let results = {};
-    if(is_dir(directory)){
-        let childList = walkfolders(directory);
-        for(let i=0;i<childList.length;i++){
-            results[childList[i]]={};
-        }
-        for(let k in results){
-            if(is_dir(directory+'/'+k)){
-                let childList = walkfolders(directory+'/'+k)
-                for(let i=0;i<childList.length;i++){
-                    results[k][childList[i]] = {}
-                }
-                for(let y in results[k]){
-                    if(is_dir(directory+'/'+k+'/'+y)){
-                        let childList = walkfolders(directory+'/'+k+'/'+y);
-                        for(let i=0;i<childList.length;i++){
-                            results[k][y][childList[i]] = {}
-                        }
-                        for(let x in results[k][y]){
-                            if(is_dir(directory+'/'+k+'/'+y+'/'+x)){
-                                let childList = walkfolders(directory+'/'+k+'/'+y+'/'+x);
-                                for(let i=0;i<childList.length;i++){
-                                    results[k][y][x][childList[i]] = {}
-                                }
-                                for(let z in results[k][y][x]){
-                                    if(is_dir(directory+'/'+k+'/'+y+'/'+x+'/'+z)){
-                                        console.log('Too Complex Data Structure! Cannot Handle1')
-                                    }
-                                    else{
-                                        results[k][y][x] =  walkfolders(directory+'/'+k+'/'+y+'/'+x);
-                                    }
-                                }
 
-                            }
-                            else{
-                                results[k][y] =  walkfolders(directory+'/'+k+'/'+y);
-                            }
-
-                        }
-                    }
-                    else{
-                        results[k] = walkfolders(directory+'/'+k)
-                    }
-                }
-            }
-            else{
-                results= walkfolders(directory+'/')
-            }
-        }
-    }
-    else{
-
-    }
-    return results
-}
+let sliderType = convertResult('./public/data');
 router.get('/', function(req, res, next) {
     res.render('index', { title: appName,sliderType:sliderType});
 });
+function convertResult(tmpResult){
+    let result = {};
+    if(is_dir(tmpResult)){
+        let children = walkfolders(tmpResult);
+        if(is_dir(tmpResult+'/'+children[0])){
+
+            for(let i=0;i<children.length;i++){
+                result[children[i]] = convertResult(tmpResult+'/'+children[i])
+            }
+        }
+        else{
+            result = children
+        }
+
+    }
+    else{
+        result = tmpResult.split('/').pop()
+    }
+
+    return result
+}
+
 
 function walkfolders(dir) {
     var fs = fs || require('fs'),
