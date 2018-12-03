@@ -7,46 +7,12 @@
 * I will explain the logic to Juhong Yuan.
 * */
 
-// var sliderType = {
-//     'Work':{
-//         'High Income':['Insuff Car','No Car','Suff Car','Need Car At Work'],
-//         'Low Income':['Insuff Car','No Car','Suff Car','Need Car At Work'],
-//         'Medium Income':['Insuff Car','No Car','Suff Car','Need Car At Work'],
-//     },
-//     'Post Secondary Education':['Insuff Car','No Car','Suff Car'],
-//
-//     'Grade School':{
-//         'Elementary School':['Insuff Car','No Car','Suff Car'],
-//         'Junior High':['Insuff Car','No Car','Suff Car'],
-//         'Preschool':['Insuff Car','No Car','Suff Car'],
-//         'SHS With License':['Insuff Car','No Car','Suff Car'],
-//         'SHS Without License':['Insuff Car','No Car','Suff Car'],
-//     },
-//     'Other': ['Insuff Car','No Car','Suff Car'],
-//     'Other Purpose':{
-//         'Eat':['Insuff Car','No Car','Suff Car'],
-//         'PB':['Insuff Car','No Car','Suff Car'],
-//         'PUDO':['Insuff Car','No Car','Suff Car'],
-//         'QS':['Insuff Car','No Car','Suff Car'],
-//         'Rec':['Insuff Car','No Car','Suff Car'],
-//         'Shop':['Insuff Car','No Car','Suff Car'],
-//         'Soc':['Insuff Car','No Car','Suff Car'],
-//         'test':{
-//             'test1':['No Car'],
-//             'test2':['Suff Car']
-//         }
-//     }
-// };
 var map;
 var dataMatrix;
 var reverseDataMatrix;
 var check = false;
-var selectMatrixName;
 var scaleCheck=false;
-var clickedFirstLevel;
-var clickedSecondLevel;
-var clickedThirdLevel;
-var clickedFourthLevel;
+
 //load esri libraries
 require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
     "esri/tasks/query","esri/dijit/Popup",
@@ -57,111 +23,7 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
 ], function(Graphic,Polyline,domConstruct,Query,Popup,domClass,BasemapToggle,Legend,Map, FeatureLayer,
             SimpleFillSymbol,SimpleLineSymbol,ClassBreaksRenderer,Color, domStyle
 ) {
-    // for(let k in sliderType){
-    //     $('#firstLevelContainer').append('<input type="radio" name="firstLevelRadios" value="'+k+'" id="'+k+'">')
-    //                              .append('<label for="'+k+'">'+k+'</label>')
-    // }
-    // $('#firstLevelContainer').radiosToSlider({animation: true});
-    // $('#firstLevelContainer').click(function(e){
-    //     let nowClickedFirstLevel = $("input[name='firstLevelRadios']:checked").val();
-    //     if(nowClickedFirstLevel!==clickedFirstLevel && typeof(nowClickedFirstLevel)!=='undefined'){
-    //         resetLayer();
-    //         $('#OtherLevelsContainer').empty();
-    //         clickedFirstLevel = nowClickedFirstLevel;
-    //         clickedSecondLevel = undefined;
-    //         clickedThirdLevel = undefined;
-    //         clickedFourthLevel = undefined;
-    //
-    //         if(checkDepth(sliderType[clickedFirstLevel])>1){
-    //             $('#OtherLevelsContainer').append('<div id="secondLevelRadios"></div>');
-    //             for(let k in sliderType[clickedFirstLevel]){
-    //                 $('#secondLevelRadios').append('<input type="radio" name="secondLevelRadios" value="'+k+'" id="'+k+'">').append('<label for="'+k+'">'+k+'</label>')
-    //             }
-    //             $('#secondLevelRadios').radiosToSlider({animation: true});
-    //             $('#secondLevelRadios').click(function(e){
-    //                 $('#thirdLevelRadios').remove();
-    //                 $('#fourthLevelRadios').remove();
-    //                 let nowClickedSecondLevel =$("input[name='secondLevelRadios']:checked").val();
-    //                 if(nowClickedSecondLevel!==clickedSecondLevel && typeof(nowClickedSecondLevel)!=='undefined'){
-    //                     resetLayer();
-    //                     clickedSecondLevel = nowClickedSecondLevel;
-    //                     clickedThirdLevel = undefined;
-    //                     clickedFourthLevel = undefined;
-    //
-    //                     if(checkDepth(sliderType[clickedFirstLevel][clickedSecondLevel])>1){
-    //                         $('#OtherLevelsContainer').append('<div id="thirdLevelRadios"></div>');
-    //                         for(let k in sliderType[clickedFirstLevel][clickedSecondLevel]){
-    //                             $('#thirdLevelRadios').append('<input type="radio" name="thirdLevelRadios" value="'+k+'" id="'+k+'">').append('<label for="'+k+'">'+k+'</label>')
-    //                         }
-    //                         $('#thirdLevelRadios').radiosToSlider({animation: true});
-    //                         $('#thirdLevelRadios').click(function(e){
-    //                             $('#fourthLevelRadios').remove();
-    //                             let nowClickedThirdLevel =$("input[name='thirdLevelRadios']:checked").val();
-    //                             if(nowClickedThirdLevel!==clickedThirdLevel && typeof(nowClickedThirdLevel)!=='undefined'){
-    //                                 resetLayer();
-    //                                 clickedThirdLevel = nowClickedThirdLevel;
-    //                                 clickedFourthLevel = undefined;
-    //                                 if(checkDepth(sliderType[clickedFirstLevel][clickedSecondLevel][clickedThirdLevel])>1){
-    //                                     alert('Sorry, your data structure is too complex and I couldn\'\t handle it yet' )
-    //                                 }
-    //                                 else{
-    //                                     $('#OtherLevelsContainer').append('<div id="fourthLevelRadios"></div>');
-    //                                     for(let k in sliderType[clickedFirstLevel][clickedSecondLevel][clickedThirdLevel]){
-    //                                         $('#fourthLevelRadios').append('<input type="radio" name="fourthLevelRadios" value="'+sliderType[clickedFirstLevel][clickedSecondLevel][clickedThirdLevel][k].split('.csv')[0]+'" id="'+k+'">').append('<label for="'+k+'">'+sliderType[clickedFirstLevel][clickedSecondLevel][clickedThirdLevel][k].split('.csv')[0]+'</label>')
-    //                                     }
-    //                                     $('#fourthLevelRadios').radiosToSlider({animation: true});
-    //                                     $('#fourthLevelRadios').click(function(e){
-    //                                         let nowClickedFourthLevel =$("input[name='fourthLevelRadios']:checked").val();
-    //                                         if(nowClickedFourthLevel!==clickedFourthLevel && typeof(nowClickedFourthLevel)!=='undefined'){
-    //                                             clickedFourthLevel = nowClickedFourthLevel;
-    //                                             selectMatrixName = './data/'+clickedFirstLevel+'/'+clickedSecondLevel+'/'+clickedThirdLevel+'/'+clickedFourthLevel+'.csv';
-    //                                             $("#wait").css("display", "block");
-    //                                             redrawLayer(selectMatrixName);
-    //                                         }
-    //                                     })
-    //                                 }
-    //                             }
-    //                         });
-    //                     }
-    //                     else{
-    //                         $('#OtherLevelsContainer').append('<div id="thirdLevelRadios"></div>');
-    //                         for(let k in sliderType[clickedFirstLevel][clickedSecondLevel]){
-    //                             $('#thirdLevelRadios').append('<input type="radio" name="thirdLevelRadios" value="'+sliderType[clickedFirstLevel][clickedSecondLevel][k].split('.csv')[0]+'" id="'+k+'">').append('<label for="'+k+'">'+sliderType[clickedFirstLevel][clickedSecondLevel][k].split('.csv')[0]+'</label>')
-    //                         }
-    //                         $('#thirdLevelRadios').radiosToSlider({animation: true});
-    //                         $('#thirdLevelRadios').click(function(e){
-    //                             let nowClickedThirdLevel =$("input[name='thirdLevelRadios']:checked").val();
-    //                             if(nowClickedThirdLevel!==clickedThirdLevel && typeof(nowClickedThirdLevel)!=='undefined'){
-    //                                 clickedThirdLevel = nowClickedThirdLevel;
-    //                                 clickedFourthLevel = undefined;
-    //                                 $('#fourthLevelRadios').remove();
-    //                                 selectMatrixName = './data/'+clickedFirstLevel+'/'+clickedSecondLevel+'/'+clickedThirdLevel+'.csv';
-    //                                 $("#wait").css("display", "block");
-    //                                 redrawLayer(selectMatrixName);
-    //                             }
-    //                         })
-    //                     }
-    //                 }
-    //             });
-    //         }
-    //         else{
-    //             $('#OtherLevelsContainer').append('<div id="secondLevelRadios"></div>');
-    //             for(let k in sliderType[clickedFirstLevel]){
-    //                 $('#secondLevelRadios').append('<input type="radio" name="secondLevelRadios" value="'+sliderType[clickedFirstLevel][k].split('.csv')[0]+'" id="'+k+'">').append('<label for="'+k+'">'+sliderType[clickedFirstLevel][k].split('.csv')[0]+'</label>')
-    //             }
-    //             $('#secondLevelRadios').radiosToSlider({animation: true});
-    //             $('#secondLevelRadios').click(function(e){
-    //                 let nowClickedSecondLevel = $("input[name='secondLevelRadios']:checked").val();
-    //                 if(nowClickedSecondLevel!== clickedSecondLevel && typeof(nowClickedSecondLevel)!=='undefined' ){
-    //                     clickedSecondLevel = nowClickedSecondLevel;
-    //                     selectMatrixName = './data/'+clickedFirstLevel+'/'+clickedSecondLevel+'.csv';
-    //                     $("#wait").css("display", "block");
-    //                     redrawLayer(selectMatrixName)
-    //                 }
-    //             })
-    //         }
-    //     }
-    // });
+
     let sliderRecord = {
         filePath:null
     };
