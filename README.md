@@ -1,4 +1,4 @@
-# Accessibility Logsum Model 
+# Accessibility Model 
 This is a Nodejs web application using Arcgis Javascript API. It is developed based on Logsum Model. The difference is that this App shows the logsum of logsum value, and the map is not interactive. The data source is the same as the one in Logsum Model. The method of calculating logsum of logsum is provided by Cherry.
 ## Set Up
 #### From Github:
