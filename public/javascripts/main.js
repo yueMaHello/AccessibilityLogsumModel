@@ -325,7 +325,7 @@ function checkDepth(object){
     for(key in object) {
         if (!object.hasOwnProperty(key)) continue;
 
-        if(typeof object[key] == 'object'){
+        if(typeof(object[key])=== 'object'){
             var depth = checkDepth(object[key]) + 1;
             level = Math.max(depth, level);
         }
