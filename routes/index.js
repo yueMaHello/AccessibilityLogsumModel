@@ -2,8 +2,8 @@ var express = require('express');
 var fs = require('fs');
 var path = require('path');
 var router = express.Router();
+//if you change the application's name/title, you should change here. And you need to terminate the web server and npm start again.
 var appName = 'Accessibility Model';
-var currentFolderName = './public/data/';
 
 Array.prototype.contains = function(element){
     return this.indexOf(element) > -1;

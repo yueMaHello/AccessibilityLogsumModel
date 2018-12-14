@@ -12,7 +12,8 @@ var dataMatrix;
 var reverseDataMatrix;
 var check = false;
 var scaleCheck=false;
-
+//The attribute of id of feature layer. You should update it if you update the featureLayer
+var featureLayerIdTitle = 'TAZ_New';
 //load esri libraries
 require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
     "esri/tasks/query","esri/dijit/Popup",
@@ -162,13 +163,13 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
     $("#interact").click(function(e, parameters) {
         if($("#interact").is(':checked')){
             check = true;
-            $('#sliderNote').html("D&nbspto&nbspO");
+            $('#sliderNote').html("Destination&nbspto&nbspOrigin");
             changeScale();
             featureLayer.redraw();
         }
         else{
             check = false;
-            $('#sliderNote').html("O&nbspto&nbspD");
+            $('#sliderNote').html("Origin&nbspto&nbspDestination");
             changeScale();
             featureLayer.redraw();
 
@@ -204,12 +205,11 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
             var renderer = new ClassBreaksRenderer(symbol, function(feature){
                 //if 'var check' is false, then show origin to destination
                 if(check === false){
-                    return dataMatrix[feature.attributes.TAZ_New];
+                    return dataMatrix[feature.attributes[featureLayerIdTitle]];
                 }
                 //else, destination to origin
                 else{
-                    //return dataMatrix[feature.attributes.TAZ_New][selectZone];
-                    return reverseDataMatrix[feature.attributes.TAZ_New];
+                    return reverseDataMatrix[feature.attributes[featureLayerIdTitle]];
                 }
             });
 
@@ -250,11 +250,11 @@ require(["esri/graphic","esri/geometry/Polyline","dojo/dom-construct",
             var renderer = new ClassBreaksRenderer(symbol, function(feature){
                 //if 'var check' is false, then show origin to destination
                 if(check === false){
-                    return dataMatrix[feature.attributes.TAZ_New];
+                    return dataMatrix[feature.attributes[featureLayerIdTitle]];
                 }
                 //else, destination to origin
                 else{
-                    return reverseDataMatrix[feature.attributes.TAZ_New];
+                    return reverseDataMatrix[feature.attributes[featureLayerIdTitle]];
                 }
             });
             renderer.addBreak(-Infinity, valueArray[chunksize], new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([0,0,0,0.1]),1)).setColor(new Color([255, 255, 255,0.90])));
